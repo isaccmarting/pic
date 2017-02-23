@@ -5,6 +5,6 @@ Storing my opengl code
 > example: The instance about how to write Makefile and use opengl. 
 
 ### File structure 
-####  example
-#####   |- main.cpp
-#####   |- Makefile
+    example  
+     |- main.cpp  
+     |_ Makefile  
