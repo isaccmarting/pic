@@ -1,0 +1,67 @@
+我们通过glEnable来启用状态，通过glDisable来禁用它们。例如：
+
+glEnable(GL_DEPTH_TEST);
+
+glEnable(GL_BLEND);
+
+glEnable(GL_CULL_FACE);
+
+glEnable(GL_LIGHTING);
+
+glEnable(GL_TEXTURE_2D);
+
+可以用glIsEnabled函数来检测这些状态是否被开启。例如：
+
+glIsEnabled(GL_DEPTH_TEST);
+
+glIsEnabled(GL_BLEND);
+
+glIsEnabled(GL_CULL_FACE);
+
+glIsEnabled(GL_LIGHTING);
+
+glIsEnabled(GL_TEXTURE_2D);
+
+
+
+// 取得当前的直线宽度
+
+GLfloat lw;
+
+glGetFloatv(GL_LINE_WIDTH, &lw);
+
+// 取得当前的颜色
+
+GLfloat cc[4];
+
+glGetFloatv(GL_CURRENT_COLOR, cc);
+
+// 取得当前的视口
+
+GLint viewport[4];
+
+glGetIntegerv(GL_VIEWPORT, viewport);
+
+
+
+1. Vertex data: 顶点数据。比如我们指定的颜色、纹理坐标、法线向量、顶点坐标等，都属于顶点数据。
+
+2. Pixel data: 像素数据。我们在绘制像素、指定纹理时都会用到像素数据。
+
+3. Display list: 显示列表。可以把调用的OpenGL函数保存起来。（参见第八课）
+
+4. Evaluators: 求值器。这个我们在前面的课程中没有提到，以后估计也不太会提到。利用求值器可以指定贝赛尔曲线或者贝赛尔曲面，但是实际上还是可以理解为指定顶点、指定纹理坐标、指定法线向量等。
+
+5. Per-vertex operations and primitive assembly: 单一的顶点操作以及图元装配。首先对单一的顶点进行操作，比如变换（参见第五课）。然后把顶点装配为图元（图元就是OpenGL所能绘制的最简单的图形，比如点、线段、三角形、四边形、多边形等，参见第二课）
+
+6. Pixel operations: 像素操作。例如把内存中的像素数据格式转化为图形硬件所支持的数据格式。对于纹理，可以替换其中的一部分像素，这也属于像素操作。
+
+7. Rasterization: 光栅化。顶点数据和像素数据在这里交汇（可以想像成：顶点和纹理，一起组合成了具有纹理的三角形），形成完整的、可以显示的一整块（可能是点、线段、三角形、四边形，或者其它不规则图形），里面包含若干个像素。这一整块被称为fragment（片段）。
+
+8. Per-fragment operations: 片段操作。包括各种片段测试（参见第十二课）。
+
+9. Framebuffer: 帧缓冲。这是一块存储空间，显示设备从这里读取数据，然后显示到屏幕。
+
+10. Texture assembly: 纹理装配，这里我也没怎么弄清楚:(，大概是说纹理的操作和像素操作是相关的吧。
+
+
