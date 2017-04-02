@@ -6,3 +6,6 @@ clean:
 	rm *.o
 	rm *.exe
 
+getGLVersion:
+	g++ -c -o getGLVersion.o getGLVersion.cpp 
+	g++ -o getGLVersion.exe getGLVersion.o -lfreeglut -lopengl32 -lglu32 -Wl,--subsystem,windows
