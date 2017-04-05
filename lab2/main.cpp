@@ -1,115 +1,156 @@
-#include <math.h>
+#include <windows.h>
 #include <stdio.h>
-#include "gl/glut.h"
+#include <GL/glut.h>
 
-const GLfloat PI = 3.1415926f;
+const GLuint index_list[] = {
+	3, 2, 1, 0, // low 
+	5, 4, 0, 1, // left 
+	6, 5, 1, 2, // front 
+	7, 6, 2, 3, // right 
+	4, 7, 3, 0, // back 
+	4, 5, 6, 7  // up 
+}; 
 
-void drawStar(GLfloat long_edge, GLfloat color[])
-{
-	GLfloat short_edge, r; 
-	GLfloat theta = 0.5 * PI; 
-	GLint i;  
+GLfloat left_y = 0; 
+GLfloat middle_rot_angle = 0.0f; 
+GLfloat right_scale = 1.0f; 
+
+// GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3, GLfloat v4, GLfloat v5, GLfloat v6, GLfloat v7 
+// (x, y) (-1,  1) (-1, -1) ( 1, -1) ( 1,  1)
+// z =  1 v4        v5      v6       v7
+// z = -1 v0        v1      v2       v3
+void drawCube(GLfloat vertex_list[])
+{	
+//	glFrontFace(GL_CCW); 
+//	glCullFace(GL_BACK); 
+//	glEnable(GL_CULL_FACE); 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+
+	glEnableClientState(GL_VERTEX_ARRAY); 
+	glVertexPointer(3, GL_FLOAT, 0, vertex_list); 
+	glDrawElements(GL_QUADS, 24, GL_UNSIGNED_INT, index_list); 
 	
-	short_edge = long_edge * (sin(0.1*PI) / sin(0.7*PI)); 
-	glColor3fv(color); 
-	glBegin(GL_TRIANGLE_FAN); 
-		glVertex3f(0.0f, 0.0f, 0.5f); 
-		for(i = 0; i < 11; i ++)
-	    {
-			if(i % 2 == 0) r = long_edge; 
-			else r = short_edge; 
-			glVertex3f(r * cos(theta), r * sin(theta), 0.5f); 
-			theta += 0.2 * PI; 
-			// printf("%lf %lf\n", r * cos(theta), r * sin(theta)); 
-	    }
-	glEnd(); 
+	return ; 
 }
 
-// r1, r2, a = 36`; 
-// l, s
-// s / sin(18`) = l / sin(126`)
-// s = l * (sin(18`) / sin(126`))
-// 
-// (-0.25, 0.25) 
-// for(i = 0; i < 11; i += 1)
-// cos = cos(last + a) = coslast cosa - sinlast sina; 
-// sin = sin(last + a) = sinlast cosa + coslast sina; 
+void reshape(int width, int height)
+{
+	if(height == 0)
+		height = 1; 
+
+	glViewport(0, 0, width, height); 
+	
+	glMatrixMode(GL_PROJECTION); 
+	glLoadIdentity(); 
+	gluPerspective(75.0f, (GLfloat)width / height, 0.1f, 100.0f/*100.0f*/); 
+
+	glMatrixMode(GL_MODELVIEW); 
+	glLoadIdentity(); 
+	gluLookAt(0.0f, 0.0f, 15.0f, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0f); 
+
+	return ; 
+}
+
+void drawTable()
+{
+	// ×ÀÃæ
+	GLfloat vertex_list0[24] = {
+		-2.5f,  2.0f, 0.0f, 
+		-2.5f, -2.0f, 0.0f, 
+		 2.5f, -2.0f, 0.0f, 
+         2.5f,  2.0f, 0.0f, 
+		-2.5f,  2.0f, 1.0f, 
+		-2.5f, -2.0f, 1.0f, 
+		 2.5f, -2.0f, 1.0f, 
+         2.5f,  2.0f, 1.0f, 
+	}; 
+	// ×À½Ç
+    GLfloat vertex_list1[24] = {
+		-0.4f,  0.4f, -3.0f, 
+		-0.4f, -0.4f, -3.0f, 
+		 0.4f, -0.4f, -3.0f, 
+         0.4f,  0.4f, -3.0f, 
+		-0.4f,  0.4f,  0.0f, 
+		-0.4f, -0.4f,  0.0f,
+		 0.4f, -0.4f,  0.0f,
+         0.4f,  0.4f,  0.0f,
+	}; 
+	
+	glPushMatrix(); 
+	drawCube(vertex_list0); 
+	glPopMatrix(); 
+	glPushMatrix(); 
+	glTranslatef(-1.5f, 1.0f, 0.0f); 
+	drawCube(vertex_list1); 
+	glPopMatrix(); 
+	glPushMatrix(); 
+	glTranslatef(-1.5f, -1.0f, 0.0f); 
+	drawCube(vertex_list1); 
+	glPopMatrix(); 
+	glPushMatrix(); 
+	glTranslatef(1.5f, -1.0f, 0.0f); 
+	drawCube(vertex_list1); 
+	glPopMatrix(); 
+	glPushMatrix(); 
+	glTranslatef(1.5f, 1.0f, 0.0f); 
+	drawCube(vertex_list1); 
+	glPopMatrix(); 
+	return ; 
+}
+
 void display()
-{
-	GLfloat long_edge, short_edge, r; 
-	GLfloat a = 0.2*PI; 
-	GLfloat sin_a = sin(a), cos_a = cos(a); 
-	GLfloat sin_last, cos_last; 
-	GLint i;  
-	long_edge = 0.25; 
-	short_edge = long_edge * (sin(0.1*PI) / sin(0.7*PI)); 
-	glClear(GL_COLOR_BUFFER_BIT);
-	glColor3f(1, 0, 0);
-	glBegin(GL_QUADS);
-	glVertex3f(-0.75, 0.5, 0.5);
-	glVertex3f(0.75, 0.5, 0.5);
-	glVertex3f(0.75, -0.5, 0.5);
-	glVertex3f(-0.75, -0.5, 0.5);
-	glEnd();
+{	
+    glClear(GL_COLOR_BUFFER_BIT); 
+	glColor3f(1.0, 1.0f, 1.0f); 
+	
+	glPushMatrix(); 
+	glTranslatef(-7.5f, 0.0f, 0.0f); 
+	glTranslatef(0.0f, left_y, 0.0f); 
+	drawTable(); 
+    glPopMatrix(); 
 
-	GLfloat color[3] = {1.0f, 1.0f, 0.0f}; 
-	// glRotatef(180.0f, 0.0f, 0.0f, -1.0f); 
-	// glTranslatef(-0.0f, 0.0f, 0.0f); 
-	// (-0.34, 0.25)
-	glLoadIdentity(); 
-	glTranslatef(-0.5f, 0.25f, 0.0f); 
-	drawStar(0.15, color); 
+	glPushMatrix(); 
+	glRotatef(middle_rot_angle, 0.0f, 1.0f, 0.0f); 
+	drawTable(); 
+    glPopMatrix(); 
 
-	glLoadIdentity(); 
-	glTranslatef(-0.5f, 0.25f, 0.0f); 
-	glTranslatef(0.35f, -0.1f, 0.0f); 
-	drawStar(0.05, color); 
+	glPushMatrix(); 
+	glTranslatef(7.5f, 0.0f, 0.0f); 
+	glScalef(right_scale, right_scale, right_scale); 
+	drawTable(); 
+    glPopMatrix(); 
 
-	glLoadIdentity(); 
-	glTranslatef(-0.5f, 0.25f, 0.0f); 
-	glRotatef(atan(4.0/5)/PI * 180, 0.0f, 0.0f, -1.0f); 
-	glTranslatef(sqrt(0.2 * 0.2 + 0.25 * 0.25), 0.0f, 0.0f); 
-	drawStar(0.05, color); 
+    left_y += 0.002f; 
+	if(left_y >= 1.6f) left_y = 0.0f; 
+	middle_rot_angle += 0.4f; 
+	if(middle_rot_angle >= 360.0f) middle_rot_angle = 0.0f; 
+	right_scale -= 0.001f; 
+	if(right_scale <= 0.5f) right_scale = 1.0f; 
 
-	glLoadIdentity(); 
-	glTranslatef(-0.5f, 0.25f, 0.0f); 
-	glRotatef(atan(1.0/7)/PI * 180, 0.0f, 0.0f, 1.0f); 
-	glTranslatef(sqrt(0.35 * 0.35 + 0.05 * 0.05), 0.0f, 0.0f); 
-	drawStar(0.05, color); 
-
-	glLoadIdentity(); 
-	glTranslatef(-0.5f, 0.25f, 0.0f); 
-	glRotatef(atan(3.0/5)/PI * 180, 0.0f, 0.0f, 1.0f); 
-	glTranslatef(sqrt(0.25 * 0.25 + 0.15 * 0.15), 0.0f, 0.0f); 
-	drawStar(0.05, color); 
-
-	glLoadIdentity(); 
-//        sin_last = 1.0f; cos_last = 0.0f; 
-//        glVertex3f(0.0f, 0.0f, 0.5f); 
-//        for(i = 0; i < 11; i++)
-//	    {
-//			if(i % 2 == 0) r = long_edge; 
-//			else r = short_edge; 
-//			glVertex3f(r * cos_last, r * sin_last, 0.5f); 
-//			sin_last = sin_last * cos_a + cos_last * sin_a; 
-//			cos_last = cos_last * cos_a - sin_last * sin_a; 
-//			printf("%lf %lf\n", r * cos_last, r * sin_last); 
-//	    }
-
-	glutSwapBuffers();
+	glutSwapBuffers(); 
+	return ; 
 }
 
-int main (int argc,  char *argv[])
+void idle()
 {
-	glutInit(&argc,argv);
-	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE);
-	glutInitWindowPosition(10, 10);
-	glutInitWindowSize(400, 400);
-	glutCreateWindow("Simple GLUT App");
+	Sleep(1); 
+	glutPostRedisplay(); 
+	return ; 
+}
 
-	glutDisplayFunc(display);
+int main(int argc, char *argv[])
+{
+	glutInit(&argc, argv); 
+	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE); 
+	glutInitWindowPosition(10, 10); 
+	glutInitWindowSize(400, 400); 
+	glutCreateWindow("Draw Cube"); 
 
-	glutMainLoop();
+	glutDisplayFunc(display); 
+	glutReshapeFunc(reshape); 
+	glutIdleFunc(idle); 
 
-	return 0;
+	glutMainLoop(); 
+	
+	return 0; 
 }
