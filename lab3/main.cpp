@@ -174,9 +174,24 @@ void Draw_Scene()
 	glRotatef(90, 1, 0, 0); 
 	// 旋转水壶已转过的角度
 	glRotatef(fPotRot, 0, 1, 0); 
+	     GLfloat pot_mat_ambient[]   = {0.0/255, 142.0/255, 0.0/255, 1.0f};
+         GLfloat pot_mat_diffuse[]   = {0.0/255, 142.0/255, 0.0/255, 1.0f};
+         GLfloat pot_mat_specular[] = {0.0/255, 0.0/255, 0.0/255, 1.0f};
+
+         glMaterialfv(GL_FRONT, GL_AMBIENT,    pot_mat_ambient);
+         glMaterialfv(GL_FRONT, GL_DIFFUSE,    pot_mat_diffuse);
+         glMaterialfv(GL_FRONT, GL_SPECULAR,   pot_mat_specular);
 	glutSolidTeapot(1.0f); 
 	glPopMatrix(); 
 
+		 GLfloat tbl_mat_ambient[]   = {200.0/255, 145.0/255, 33.0/255, 1.0f};
+         GLfloat tbl_mat_diffuse[]   = {200.0/255, 145.0/255, 33.0/255, 1.0f};
+         GLfloat tbl_mat_specular[] = {0.0/255, 0.0/255, 0.0/255, 1.0f};
+
+         glMaterialfv(GL_FRONT, GL_AMBIENT,    tbl_mat_ambient);
+         glMaterialfv(GL_FRONT, GL_DIFFUSE,    tbl_mat_diffuse);
+         glMaterialfv(GL_FRONT, GL_SPECULAR,   tbl_mat_specular);
+	
 	// table face 
 	glPushMatrix(); 
 	glTranslatef(0.0f, 0.0f, 3.5f); 
