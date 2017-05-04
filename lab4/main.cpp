@@ -60,15 +60,8 @@ void getFPS()
 void DrawTable()
 {
 	glPushMatrix(); 
-	glTranslatef(0.0f, 3.5f, 0.0f); 
-	//glScalef(5.0f, 1.0f, 4.0f); 
-	glScalef(7.5f, 0.5f, tableWidth); 
-	glutSolidCube(1.0f); 
-	glPopMatrix(); 
-
-	glPushMatrix(); 
 	// glTranslatef(1.5f, 1.5f, 1.0f); 
-	glTranslatef(3.0f, 0.5f, tableWidth/2-0.5f/*2.5f*/); 
+	glTranslatef(3.0f, 0.5f, /*tableWidth/2-0.5f*/2.5f); 
 	// glScalef(1.0f, 3.0f, 1.0f); 
 	glScalef(0.5f, 6.0f, 0.5f); 
 	glutSolidCube(1.0f); 
@@ -76,7 +69,7 @@ void DrawTable()
 
 	glPushMatrix(); 
 	// glTranslatef(-1.5f, 1.5f, 1.0f); 
-	glTranslatef(-3.0f, 0.5f, tableWidth/2-0.5f); 
+	glTranslatef(-3.0f, 0.5f, /*tableWidth/2-0.5f*/2.5f); 
 	// glScalef(1.0f, 3.0f, 1.0f); 
 	glScalef(0.5f, 6.0f, 0.5f); 
 	glutSolidCube(1.0f); 
@@ -84,7 +77,7 @@ void DrawTable()
 
 	glPushMatrix(); 
 	// glTranslatef(-1.5f, 1.5f, -1.0f); 
-	glTranslatef(-3.0f, 0.5f, -(tableWidth/2-0.5f)); 
+	glTranslatef(-3.0f, 0.5f, -(/*tableWidth/2-0.5f*/2.5f)); 
 	// glScalef(1.0f, 3.0f, 1.0f); 
 	glScalef(0.5f, 6.0f, 0.5f); 
 	glutSolidCube(1.0f); 
@@ -92,7 +85,7 @@ void DrawTable()
 
 	glPushMatrix(); 
 	// glTranslatef(1.5f, 1.5f, -1.0f); 
-	glTranslatef(3.0f, 0.5f, -(tableWidth/2-0.5f)); 
+	glTranslatef(3.0f, 0.5f, -(/*tableWidth/2-0.5f*/2.5f)); 
 	// glScalef(1.0f, 3.0f, 1.0f); 
 	glScalef(0.5f, 6.0f, 0.5f); 
 	glutSolidCube(1.0f); 
@@ -117,6 +110,12 @@ void DrawScene()
 	glPopMatrix(); 
 
 	DrawTable(); 
+	glPushMatrix(); 
+	glTranslatef(0.0f, 3.5f, 0.0f); 
+	//glScalef(5.0f, 1.0f, 4.0f); 
+	glScalef(7.5f, 0.5f, tableWidth); 
+	glutSolidCube(1.0f); 
+	glPopMatrix(); 
 }
 
 void GenSceneList()
@@ -153,6 +152,12 @@ void Draw_Scene_List()
 	glPopMatrix(); 
 	
 	glCallList(tableList); 
+	glPushMatrix(); 
+	glTranslatef(0.0f, 3.5f, 0.0f); 
+	//glScalef(5.0f, 1.0f, 4.0f); 
+	glScalef(7.5f, 0.5f, tableWidth); 
+	glutSolidCube(1.0f); 
+	glPopMatrix(); 
 }
 
 void reshape(int width, int height)
