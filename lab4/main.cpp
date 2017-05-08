@@ -20,6 +20,9 @@ GLfloat fRotate = 0;
 bool bDrawList = false; 
 GLint tableList, rabbitList; 
 
+bool bRabbitAnim = false; 
+GLfloat fRabbitRotate = 0; 
+
 // 兔子的数量
 GLint rabbitNum = 1; 
 // 桌子的宽度
@@ -117,7 +120,10 @@ void DrawScene()
 	glScalef(2.0f, 2.0f, 2.0f); 
 	for(i = 0; i < rabbitNum; i++)
 	{
+		glPushMatrix(); 
+		glRotatef(fRabbitRotate, 0, 1, 0); 
 		DrawBunny(); 
+		glPopMatrix(); 
 		// 下一个兔子的位置
 		glTranslatef(-0.9f, 0.0f, 0.0f); 
 		// 一行兔子满后会换行
@@ -278,6 +284,27 @@ void key(unsigned char k, int x, int y)
 	}
 }
 
+void mouse(int button, int state, int x, int y)
+{
+	switch(button)
+	{
+		case GLUT_LEFT_BUTTON: {
+			if(state == GLUT_DOWN)
+				bRabbitAnim = true; 
+			break; 
+		}
+		case GLUT_MIDDLE_BUTTON: {
+			break; 
+		}
+		case GLUT_RIGHT_BUTTON: {
+			if(state == GLUT_DOWN)
+				bRabbitAnim = false; 
+			break; 
+		}
+		default: break; 
+	}
+}
+
 // 主要的显示函数 
 void redraw()
 {
@@ -304,7 +331,8 @@ void redraw()
 	// 如果旋转，则增加相应的角度 
 	if(bAnim) fRotate += 0.5f; 
 	glRotatef(fRotate, 0.0f, 1.0f, 0.0f); 
-	
+	if(bRabbitAnim) fRabbitRotate += 0.5f; 
+
 	glScalef(0.4f, 0.4f, 0.4f); 
 	// 选择是否用显示列表 
 	if(!bDrawList) DrawScene(); 
@@ -325,6 +353,7 @@ int main(int argc, char *argv[])
 	glutDisplayFunc(redraw); 
 	glutReshapeFunc(reshape); 
 	glutKeyboardFunc(key); 
+	glutMouseFunc(mouse); 
 	glutIdleFunc(idle); 
 
 	GenSceneList(); 
