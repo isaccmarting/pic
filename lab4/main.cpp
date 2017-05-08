@@ -13,14 +13,16 @@ GLfloat fDistance = 0.2f;
 
 // 是否旋转
 bool bAnim = false; 
-// 旋转的角度
+// 已旋转的角度
 GLfloat fRotate = 0; 
 
 // 是否用显示列表
 bool bDrawList = false; 
 GLint tableList, rabbitList; 
 
+// 兔子是否旋转
 bool bRabbitAnim = false; 
+// 兔子已旋转的角度
 GLfloat fRabbitRotate = 0; 
 
 // 兔子的数量
@@ -284,20 +286,21 @@ void key(unsigned char k, int x, int y)
 	}
 }
 
+// 鼠标按键处理函数
 void mouse(int button, int state, int x, int y)
 {
 	switch(button)
 	{
-		case GLUT_LEFT_BUTTON: {
-			if(state == GLUT_DOWN)
+		case GLUT_LEFT_BUTTON: {   // 左键
+			if(state == GLUT_DOWN) // 按下
 				bRabbitAnim = true; 
 			break; 
 		}
 		case GLUT_MIDDLE_BUTTON: {
 			break; 
 		}
-		case GLUT_RIGHT_BUTTON: {
-			if(state == GLUT_DOWN)
+		case GLUT_RIGHT_BUTTON: {  // 右键
+			if(state == GLUT_DOWN) // 按下
 				bRabbitAnim = false; 
 			break; 
 		}
